@@ -9,14 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.javeriana.desarrolloweb.exceptions.SaludoException;
-
 @CrossOrigin
 @RestController
 @RequestMapping("api")
 class MyController {
 	
-	@GetMapping(path = "persona", produces = MediaType.APPLICATION_XML_VALUE)
+  @GetMapping
+  public String sayHello() {
+     return "Hello World";
+  }
+  
+	@GetMapping(path = "persona", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Persona getPersona() {
 		Persona persona = new Persona();
 		persona.setNombre("Ricardo Carrasco");
@@ -33,17 +36,13 @@ class MyController {
 //		return e.getMessage();
 //	}
 	
-	@GetMapping(path = "saludar", produces = MediaType.APPLICATION_XML_VALUE)
+	@GetMapping(path = "saludar", produces = MediaType.APPLICATION_JSON_VALUE)
 	Saludo sayHelloRequestParams(@RequestParam(name="nombre") String nombres, @RequestParam(name="apellido") String apellidos) {
 		StringBuilder value = new StringBuilder();
 		value.append("Hola mundo ");
 		value.append(nombres);
 		value.append(" ");
 		value.append(apellidos);
-		
-		if (nombres.startsWith("Mauricio")) {
-			throw new SaludoException("1001");
-		}
 		
 		return new Saludo(value.toString());
 	}
