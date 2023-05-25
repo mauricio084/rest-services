@@ -44,10 +44,12 @@ pipeline {
         }
       }
     }
-    stage('Push image'){      
-      withDockerRegistry([credentialsId: "dockerhublogin",url: ""]){
-        dockerImage.push()
-      }
+    stage('Push image'){   
+        steps{      
+            withDockerRegistry([credentialsId: "dockerhublogin",url: ""]){
+                dockerImage.push()
+            }
+        }
     }
-  }
+    }
 }
