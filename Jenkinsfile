@@ -32,11 +32,6 @@ pipeline {
         }
       }
     }
-    //stage('Docker Build'){
-      //steps{
-        //echo'Building Docker Image....'//sh'docker build -t mauricio084/java-project .'//
-      //}//
-   // }
     stage('Build image'){
       steps{        
         script{
@@ -53,5 +48,10 @@ pipeline {
             }
         }
     }
+    }
+    stage('Deploy'){
+      steps{        
+        sh 'kubectl get pods'
+      }
     }
 }
