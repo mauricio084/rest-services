@@ -1,14 +1,22 @@
 pipeline {
     
+    
+  environment {
+    dockerimagename = "mauricio084/java-project"
+  }
     agent {
         docker {
             image 'maven:3.9.0-eclipse-temurin-11' 
             args '-v /root/.m2:/root/.m2' 
         }
     }
+    
+    options {
+        skipStagesAfterUnstable()
+    }
 
     stages {
-    	stage('Cloning Repository') {
+    	stage('Clone Repository') {
             steps {
                 echo 'Clonning from Github Repository...'
             }
@@ -31,12 +39,26 @@ pipeline {
                 }
             }
         }
-        stage('Docker Build') {
-            steps {
-                echo 'Building Docker Image....'
-                sh 'docker build -t mauricio084/java-project .'
-                sh 'docker push mauricio084/java-project'
-            }
-        }
+       // stage('Docker Build') {
+         //   steps {
+           //     echo 'Building Docker Image....'
+             //   sh 'docker build -t mauricio084/java-project .'
+           // }
+       // }
+        stage('Build image') {
+      		steps{
+      		echo 'Building Docker Image....'
+      		
+        		script {
+          			dockerImage = docker.build dockerimagename
+  		      	}
+      		}
+    	}
+    	stage('Push image') {
+    	echo 'Push Docker Image....'
+       	 	withDockerRegistry([ credentialsId: "dockerhublogin", url: "" ]) {
+       			dockerImage.push()
+        	}
+   		 }    
     }
 }
