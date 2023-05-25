@@ -45,9 +45,11 @@ pipeline {
       }
     }
     stage('Push image'){   
-        steps{      
-            withDockerRegistry([credentialsId: "dockerhublogin",url: ""]){
-                dockerImage.push()
+        steps{   
+            script{   
+                withDockerRegistry([credentialsId: "dockerhublogin",url: ""]){
+                    dockerImage.push()
+                }
             }
         }
     }
