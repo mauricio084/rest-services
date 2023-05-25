@@ -8,6 +8,12 @@ pipeline {
     }
 
     stages {
+    	stage('Cloning Repository') {
+            steps {
+                echo 'Clonning from Github Repository...'
+            }
+        }
+        
         stage('Build') {
             steps {
                 echo 'Building..'
@@ -25,9 +31,11 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('Docker Build') {
             steps {
-                echo 'Deploying....'
+                echo 'Building Docker Image....'
+                sh 'docker build -t mauricio084/java-project .'
+                sh 'docker push mauricio084/java-project'
             }
         }
     }
